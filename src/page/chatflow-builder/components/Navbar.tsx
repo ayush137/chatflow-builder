@@ -13,7 +13,7 @@ const Navbar = () => {
           />
         </div>
         <Button variant="default" className="bg-primary">
-          Button
+          Save Changes
         </Button>
       </div>
     </div>
