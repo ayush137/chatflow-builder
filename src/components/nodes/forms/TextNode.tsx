@@ -15,24 +15,26 @@ const TextNode = () => {
   const [value, setValue] = useState(selectedNode?.data?.text);
 
   const setFieldValue = () => {
-    const currentNodes = [...nodes];
-    currentNodes[selectedNodeIndex].data.text = value;
     setNodes((nds: Node[]) => {
       const newNodes = nds.map((node) => {
         if (node.id === selectedNodeId) {
-          // it's important that you create a new object here
-          // in order to notify react flow about the change
           node.data = {
             text: value,
           };
-          return node;
         }
+        return node;
       });
+
       return newNodes as Node[];
     });
   };
 
   useEffect(() => {
+    setValue(selectedNode?.data?.text);
+  }, [selectedNode]);
+
+  useEffect(() => {
+    if (!selectedNode) return;
     const timer = setTimeout(() => setFieldValue(), 1000);
     return () => clearTimeout(timer);
   }, [value]);
