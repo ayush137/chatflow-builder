@@ -1,4 +1,4 @@
-import { selectedNodeAtom } from "@/atom/chatflow-atoms";
+import { nodesAtom, selectedNodeAtom } from "@/atom/chatflow-atoms";
 import { useAtom } from "jotai";
 import { Handle, NodeProps, Position } from "reactflow";
 
@@ -8,12 +8,28 @@ export type TTextNodeData = {
 
 export default function TextNode(props: NodeProps<TTextNodeData>) {
   const [selectedNode, setSelectedNode] = useAtom(selectedNodeAtom);
+  const [nodes, setNodes] = useAtom(nodesAtom);
+
+  const handleNodeSelection = () => {
+    const currentNodeIndex = nodes?.findIndex(
+      (item) => item?.id === selectedNode
+    );
+    if (currentNodeIndex !== -1 && !nodes?.[currentNodeIndex]?.data?.text) {
+      setNodes((nds) => {
+        nds[currentNodeIndex].data.error = "Required";
+        return [...nds];
+      });
+    } else {
+      setSelectedNode(props?.id);
+    }
+  };
+
   return (
     <div
       className={`w-[300px] relative border ${
         selectedNode === props?.id ? " border-green-600" : ""
       } rounded-[6px] bg-white`}
-      onClick={() => setSelectedNode(props?.id)}
+      onClick={handleNodeSelection}
     >
       <Handle
         type="target"

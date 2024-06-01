@@ -1,16 +1,15 @@
 import { nodesAtom, selectedNodeAtom } from "@/atom/chatflow-atoms";
 import { useAtom, useAtomValue } from "jotai";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Node } from "reactflow";
+
 const TextNode = () => {
   const [nodes, setNodes] = useAtom(nodesAtom);
   const selectedNodeId = useAtomValue(selectedNodeAtom);
-
   const selectedNodeIndex = nodes.findIndex(
     (item) => item?.id === selectedNodeId
   );
-
   const selectedNode = nodes[selectedNodeIndex];
   const [value, setValue] = useState(selectedNode?.data?.text);
 
@@ -20,6 +19,7 @@ const TextNode = () => {
         if (node.id === selectedNodeId) {
           node.data = {
             text: value,
+            error: "",
           };
         }
         return node;
@@ -35,12 +35,23 @@ const TextNode = () => {
 
   useEffect(() => {
     if (!selectedNode) return;
-    const timer = setTimeout(() => setFieldValue(), 1000);
+    const timer = setTimeout(() => setFieldValue(), 500);
     return () => clearTimeout(timer);
   }, [value]);
 
   return (
-    <Textarea value={value} onChange={(e) => setValue(e.currentTarget.value)} />
+    <div className="flex flex-col gap-[5px]">
+      <Textarea
+        placeholder="Enter message"
+        value={value}
+        onChange={(e) => setValue(e.currentTarget.value)}
+      />
+      {selectedNode?.data?.error ? (
+        <div className="text-red-500 text-[14px] leading-[16px] tracking-[0.5px]">
+          {selectedNode?.data?.error}
+        </div>
+      ) : null}
+    </div>
   );
 };
 

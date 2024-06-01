@@ -2,7 +2,6 @@ import { edgesAtom, nodesAtom } from "@/atom/chatflow-atoms";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useAtomValue } from "jotai";
-import React from "react";
 
 const Navbar = () => {
   const nodes = useAtomValue(nodesAtom);
@@ -45,7 +44,7 @@ const Navbar = () => {
         </div>
         <Button
           variant="default"
-          className="bg-primary"
+          className="bg-primary hover:bg-primary/90"
           onClick={handleValidation}
         >
           Save Changes

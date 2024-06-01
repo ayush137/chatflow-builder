@@ -32,10 +32,12 @@ const ChatFlowMap = () => {
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
+
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
+
   const onConnect: OnConnect = useCallback(
     (connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
